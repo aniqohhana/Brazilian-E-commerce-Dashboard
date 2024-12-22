@@ -50,9 +50,10 @@ year = st.selectbox('Select Year', sorted(years), key='order_year_select')
 filtered_reviews = e_commerce[e_commerce['order_year'] == year]
 reviews_score = filtered_reviews['review_score'].value_counts().reset_index()
 reviews_score.columns = ['Review Score', 'Count']
-fig = px.bar(reviews_score, x='Review Score', y='Count', 
+fig = px.bar(reviews_score, 
+             x='Review Score', y='Count', 
              labels={'Review Score': 'Score', 'Count': 'Number of Reviews'},
-             color='Review Score', 
+             color='Review Score',
              color_continuous_scale='Blues')
 st.plotly_chart(fig)
 
@@ -64,9 +65,11 @@ selected_year = st.selectbox('Select Year', sorted(available_years))
 filtered_orders = e_commerce[e_commerce['order_year'] == selected_year]
 payment_methods = filtered_orders['payment_type'].value_counts().reset_index()
 payment_methods.columns = ['Payment Method', 'Count']
-fig = px.bar(payment_methods, x='Payment Method', y='Count',
+fig = px.bar(payment_methods, 
+             x='Payment Method', y='Count',
              labels={'Payment Method': 'Payment Method', 'Count': 'Number of Transactions'},
-             color='Payment Method', color_continuous_scale='Blues')
+             color='Payment Method', 
+             color_continuous_scale='Blues')
 st.plotly_chart(fig)
 
 st.subheader('Customer Segmentation Based on Total Payment Value')
