@@ -21,4 +21,4 @@ pipenv shell
 pip install -r requirements.txt
 
 ### Run Streamlit app
-Streamlit run dashboard.py
+Streamlit run ecommerce_dashboard.py
