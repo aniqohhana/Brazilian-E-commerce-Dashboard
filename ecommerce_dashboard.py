@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
+import matplotlib.pyplot as plt
 
 # Load the datasets
 e_commerce = pd.read_csv('e_commerce.csv')
@@ -9,7 +10,7 @@ e_commerce = pd.read_csv('e_commerce.csv')
 # Streamlit Dashboard
 st.title('📊 Brazilian E-Commerce Dashboard 2016-2018')
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3 = st.columns(3)
 
 col1.write('Number of Customers')
 number_of_customers = e_commerce['customer_unique_id'].nunique()
@@ -19,13 +20,9 @@ col2.write('Number of Orders')
 number_of_orders = e_commerce['order_id'].nunique()
 col2.header(number_of_orders)
 
-col3.write('AVG Revenue')
-avg_revenue = e_commerce['payment_value'].mean()
-col3.header(f"{avg_revenue:.2f}")
-
-col4.write('AVG Review Score')
-avg_reviews_score = e_commerce['review_score'].mean()
-col4.header(f"{avg_reviews_score:.2f}")
+col3.write('Total Revenue')
+revenue = e_commerce['payment_value'].sum()
+col3.header(f"{revenue:.2f}")
 
 st.subheader('Revenue per Year')
 e_commerce['order_purchase_timestamp'] = pd.to_datetime(e_commerce['order_purchase_timestamp'])
@@ -42,35 +39,39 @@ fig.update_layout(xaxis_title='Year',
                   template='plotly_white')
 st.plotly_chart(fig)
 
-st.subheader('Reviews Score per Year')
-e_commerce['order_purchase_timestamp'] = pd.to_datetime(e_commerce['order_purchase_timestamp'])
-e_commerce['order_year'] = e_commerce['order_purchase_timestamp'].dt.year.astype(int)
-years = e_commerce['order_year'].unique()
-year = st.selectbox('Select Year', sorted(years), key='order_year_select')
-filtered_reviews = e_commerce[e_commerce['order_year'] == year]
-reviews_score = filtered_reviews['review_score'].value_counts().reset_index()
-reviews_score.columns = ['Review Score', 'Count']
-fig = px.bar(reviews_score, 
-             x='Review Score', y='Count', 
-             labels={'Review Score': 'Score', 'Count': 'Number of Reviews'},
-             color='Review Score',
-             color_continuous_scale='Blues')
+st.subheader('Top 10 Most Purchased Product Categories')
+top_10_product_sales = e_commerce.groupby('product_category_name_english')['order_item_id'].count().sort_values(ascending=False).head(10)
+fig = px.bar(top_10_product_sales.reset_index(),
+             x='order_item_id',
+             y='product_category_name_english',
+             color='order_item_id',
+             orientation='h',
+             labels={'order_item_id': 'Number of Orders', 'product_category_name_english': 'Product Category'})
+fig.update_layout(xaxis_title_font_size=12,
+                  yaxis_title_font_size=12,
+                  xaxis_tickfont_size=10,
+                  yaxis_tickfont_size=10)
 st.plotly_chart(fig)
 
-st.subheader('Payment Type per Year')
-e_commerce['order_purchase_timestamp'] = pd.to_datetime(e_commerce['order_purchase_timestamp'])
-e_commerce['order_year'] = e_commerce['order_purchase_timestamp'].dt.year.astype(int)
-available_years = e_commerce['order_year'].unique()
-selected_year = st.selectbox('Select Year', sorted(available_years))
-filtered_orders = e_commerce[e_commerce['order_year'] == selected_year]
-payment_methods = filtered_orders['payment_type'].value_counts().reset_index()
-payment_methods.columns = ['Payment Method', 'Count']
-fig = px.bar(payment_methods, 
-             x='Payment Method', y='Count',
-             labels={'Payment Method': 'Payment Method', 'Count': 'Number of Transactions'},
-             color='Payment Method', 
-             color_continuous_scale='Blues')
+st.subheader('Payment Method Distribution')
+payment_types = e_commerce['payment_type'].value_counts()
+fig = px.pie(payment_types,
+             values=payment_types.values,
+             names=payment_types.index,
+             hole=0.4,
+             color_discrete_sequence=px.colors.sequential.Plasma)
 st.plotly_chart(fig)
+
+st.subheader('Distribution of Review Score')
+fig = px.histogram(e_commerce,
+                   x='review_score',
+                   nbins=5,
+                   labels={'review_score': 'Review Score'})
+fig.update_layout(xaxis=dict(tickmode='linear', tick0=1, dtick=1),
+                  xaxis_title="Review Score",
+                  yaxis_title="Frequency",
+                  bargap=0.2)
+st.plotly_chart(fig, use_container_width=False)
 
 st.subheader('Customer Segmentation Based on Total Payment Value')
 payment_values = e_commerce.groupby('customer_unique_id')['payment_value'].sum().reset_index()
