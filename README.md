@@ -1,5 +1,5 @@
 # Brazilian E-Commerce Dashboard
-The Brazilian E-Commerce Dashboard is the result of a final project from Dicoding. 
+The [Brazilian E-Commerce Dashboard](https://brazilian-ecommerce-dashboard1.streamlit.app/) is the final project of the Dicoding class. 
 This dashboard visualizes key performance indicators related to sales on Brazilian e-commerce platforms.
 
 ### Dataset
