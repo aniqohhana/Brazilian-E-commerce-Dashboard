@@ -2,6 +2,9 @@
 The Brazilian E-Commerce Dashboard is the result of a final project from Dicoding. 
 This dashboard visualizes key performance indicators related to sales on Brazilian e-commerce platforms.
 
+### Dataset
+[Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
+
 ### Setup Environment - Anaconda
 conda create --name main-ds python=3.10
 
