@@ -21,10 +21,5 @@ pipenv shell
 
 pip install -r requirements.txt
 
-<<<<<<< HEAD
 ### Run Streamlit Application
 streamlit run ecommerce_dashboard.py
-=======
-### Run Streamlit app
-Streamlit run ecommerce_dashboard.py
->>>>>>> 28168899f98c0f43642e900ca42939f483225066
