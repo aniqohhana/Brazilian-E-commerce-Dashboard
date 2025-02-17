@@ -1,6 +1,8 @@
 # Brazilian E-Commerce Dashboard
-The Brazilian E-Commerce Dashboard is the result of a final project from Dicoding. 
-This dashboard visualizes key performance indicators related to sales on Brazilian e-commerce platforms.
+
+[Brazilian e-commerce dashboard](https://brazilian-ecommerce-dashboard1.streamlit.app/) is a final project for the Dicoding class. The dashboard visualizes KPIs (Key Performance Indicators) of Brazilian e-commerce sales.
+
+You can find the original dataset [here](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
 ### Setup Environment - Anaconda
 conda create --name main-ds python=3.10
@@ -20,5 +22,5 @@ pipenv shell
 
 pip install -r requirements.txt
 
-### Run Streamlit app
-Streamlit run ecommerce_dashboard.py
+### Run Streamlit Application
+streamlit run ecommerce_dashboard.py
